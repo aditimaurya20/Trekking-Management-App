@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5 pt-5">
+    <div class="col-md-4">
+        <div class="card p-4" style="border: 1.5px solid #A8D5A2; border-radius: 15px; background-color: white;">
+            <h4 class="text-center mb-4" style="color: #58AF50; font-weight: 700;">Login to TrekMate</h4>
+            <form method="POST" action="/login">
+                <div class="mb-3">
+                    <label style="color: #555;">Username</label>
+                    <input type="text" name="username" class="form-control" 
+                    style="border: 1.5px solid #A8D5A2; border-radius: 8px;" required>
+                </div>
+                <div class="mb-3">
+                    <label style="color: #555;">Password</label>
+                    <input type="password" name="password" class="form-control" 
+                    style="border: 1.5px solid #A8D5A2; border-radius: 8px;" required>
+                </div>
+                <button type="submit" class="btn btn-register w-100 mt-2">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <small>Don't have an account? 
+                    <a href="/register" style="color: #26DF20;">Register here</a>
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

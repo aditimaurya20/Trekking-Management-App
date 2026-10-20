@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="p-4 mb-4" style="background: linear-gradient(135deg, #58AF50, #26DF20); border-radius: 15px;">
+        <h3 style="color: white; font-weight: 700;">👋 Welcome, {{ session.username }}!</h3>
+        <p style="color: white; margin: 0;">Here are your assigned treks.</p>
+    </div>
+
+    <h5 class="mt-4 mb-3" style="color: #58AF50; font-weight: 700;">🏕️ Your Assigned Treks</h5>
+
+    {% if treks %}
+    <div class="row">
+        {% for trek in treks %}
+        <div class="col-md-4 mb-4">
+            <div class="card p-3" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+                <h5 style="color: #58AF50;">{{ trek.name }}</h5>
+                <p style="color: #555; margin: 0;">📍 {{ trek.location }}</p>
+                <p style="color: #555; margin: 0;">⏱️ {{ trek.duration }} days</p>
+                <p style="color: #555; margin: 0;">🎯 
+                    {% if trek.difficulty == 'Easy' %}
+                        <span class="badge" style="background-color: #26DF20;">Easy</span>
+                    {% elif trek.difficulty == 'Moderate' %}
+                        <span class="badge" style="background-color: orange;">Moderate</span>
+                    {% else %}
+                        <span class="badge" style="background-color: red;">Hard</span>
+                    {% endif %}
+                </p>
+                <p style="color: #555; margin: 0;">🪑 Slots: {{ trek.available_slots }}</p>
+                <p style="color: #555; margin: 0;">📊 Status: 
+                    <span class="badge" style="background-color: #58AF50;">{{ trek.status }}</span>
+                </p>
+                <p style="color: #555; margin: 0;">👥 Participants: {{ trek.bookings|length }}</p>
+                <div class="mt-3 d-flex gap-2">
+                    <a href="/staff/trek/{{ trek.id }}" class="btn btn-sm"
+                    style="background-color: #58AF50; color: white; border-radius: 8px;">
+                    Manage</a>
+                    <a href="/staff/trek/{{ trek.id }}/participants" class="btn btn-sm"
+                    style="background-color: #26DF20; color: white; border-radius: 8px;">
+                    Participants</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card p-4 text-center" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+        <p style="color: #888;">No treks assigned to you yet!</p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

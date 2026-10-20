@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- Welcome Banner -->
+    <div class="p-4 mb-4" style="background: linear-gradient(135deg, #58AF50, #26DF20); border-radius: 15px;">
+        <h3 style="color: white; font-weight: 700;">👋 Welcome, {{ session.username }}!</h3>
+        <p style="color: white; margin: 0;">Find your next adventure with TrekMate!</p>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card text-center p-3" style="border: 1.5px solid #A8D5A2; border-radius: 12px;">
+                <h2 style="color: #26DF20;">{{ total_booked }}</h2>
+                <p style="color: #555; margin: 0;">Treks Booked</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center p-3" style="border: 1.5px solid #A8D5A2; border-radius: 12px;">
+                <h2 style="color: #26DF20;">{{ total_completed }}</h2>
+                <p style="color: #555; margin: 0;">Treks Completed</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center p-3" style="border: 1.5px solid #A8D5A2; border-radius: 12px;">
+                <h2 style="color: #26DF20;">{{ total_cancelled }}</h2>
+                <p style="color: #555; margin: 0;">Treks Cancelled</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filter -->
+    <h5 class="mt-2 mb-3" style="color: #58AF50; font-weight: 700;">🔍 Search Treks</h5>
+    <form method="GET" action="/user/dashboard">
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control"
+                placeholder="Search by name or location..."
+                style="border: 1.5px solid #A8D5A2; border-radius: 10px;"
+                value="{{ search }}">
+            </div>
+            <div class="col-md-3">
+                <select name="difficulty" class="form-control"
+                style="border: 1.5px solid #A8D5A2; border-radius: 10px;">
+                    <option value="">All Difficulties</option>
+                    <option value="Easy" {% if difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                    <option value="Moderate" {% if difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+                    <option value="Hard" {% if difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn w-100"
+                style="background-color: #58AF50; color: white; border-radius: 10px;">
+                Search</button>
+            </div>
+            <div class="col-md-3">
+                <a href="/user/my-bookings" class="btn w-100"
+                style="background-color: #26DF20; color: white; border-radius: 10px;">
+                My Bookings</a>
+            </div>
+        </div>
+    </form>
+
+    <!-- Available Treks -->
+    <h5 class="mb-3" style="color: #58AF50; font-weight: 700;">🏕️ Available Treks</h5>
+    {% if treks %}
+    <div class="row">
+        {% for trek in treks %}
+        <div class="col-md-4 mb-4">
+            <div class="card p-3" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+                <h5 style="color: #58AF50;">{{ trek.name }}</h5>
+                <p style="color: #555; margin: 0;">📍 {{ trek.location }}</p>
+                <p style="color: #555; margin: 0;">⏱️ {{ trek.duration }} days</p>
+                <p style="color: #555; margin: 0;">🎯 
+                    {% if trek.difficulty == 'Easy' %}
+                        <span class="badge" style="background-color: #26DF20;">Easy</span>
+                    {% elif trek.difficulty == 'Moderate' %}
+                        <span class="badge" style="background-color: orange;">Moderate</span>
+                    {% else %}
+                        <span class="badge" style="background-color: red;">Hard</span>
+                    {% endif %}
+                </p>
+                <p style="color: #555; margin: 0;">🪑 Slots: {{ trek.available_slots }}</p>
+                <p style="color: #555; margin: 0;">📅 {{ trek.start_date }} to {{ trek.end_date }}</p>
+                <div class="mt-3">
+                    <a href="/user/book/{{ trek.id }}" class="btn w-100"
+                    style="background-color: #26DF20; color: white; border-radius: 10px;">
+                    Book Now</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="card p-4 text-center" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+        <p style="color: #888;">No treks available right now!</p>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

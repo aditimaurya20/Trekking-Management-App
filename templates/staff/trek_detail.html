@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 style="color: #58AF50; font-weight: 700;">🏕️ {{ trek.name }}</h3>
+        <a href="/staff/dashboard" style="color: #58AF50;">← Back to Dashboard</a>
+    </div>
+
+    <div class="card p-4 mb-4" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Trek ID:</strong> {{ trek.custom_id }}</p>
+                <p><strong>Location:</strong> {{ trek.location }}</p>
+                <p><strong>Difficulty:</strong> 
+                    {% if trek.difficulty == 'Easy' %}
+                        <span class="badge" style="background-color: #26DF20;">Easy</span>
+                    {% elif trek.difficulty == 'Moderate' %}
+                        <span class="badge" style="background-color: orange;">Moderate</span>
+                    {% else %}
+                        <span class="badge" style="background-color: red;">Hard</span>
+                    {% endif %}
+                </p>
+                <p><strong>Duration:</strong> {{ trek.duration }} days</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Start Date:</strong> {{ trek.start_date }}</p>
+                <p><strong>End Date:</strong> {{ trek.end_date }}</p>
+                <p><strong>Available Slots:</strong> {{ trek.available_slots }}</p>
+                <p><strong>Status:</strong> 
+                    <span class="badge" style="background-color: #58AF50;">{{ trek.status }}</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Trek -->
+    <div class="card p-4" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+        <h5 style="color: #58AF50; font-weight: 700;">✏️ Update Trek</h5>
+        <hr style="border-color: #A8D5A2;">
+        <form method="POST" action="/staff/trek/{{ trek.id }}/update">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label style="color: #555;">Available Slots</label>
+                    <input type="number" name="available_slots" class="form-control"
+                    style="border: 1.5px solid #A8D5A2; border-radius: 8px;"
+                    value="{{ trek.available_slots }}" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label style="color: #555;">Trek Status</label>
+                    <select name="status" class="form-control"
+                    style="border: 1.5px solid #A8D5A2; border-radius: 8px;">
+                        <option value="Pending" {% if trek.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Approved" {% if trek.status == 'Approved' %}selected{% endif %}>Approved</option>
+                        <option value="Open" {% if trek.status == 'Open' %}selected{% endif %}>Open</option>
+                        <option value="Closed" {% if trek.status == 'Closed' %}selected{% endif %}>Closed</option>
+                        <option value="Completed" {% if trek.status == 'Completed' %}selected{% endif %}>Completed</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3 d-flex align-items-end">
+                    <button type="submit" class="btn w-100"
+                    style="background-color: #26DF20; color: white; border-radius: 10px;">
+                    Update Trek</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}

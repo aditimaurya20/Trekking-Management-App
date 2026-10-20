@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 style="color: #58AF50; font-weight: 700;">👷 Manage Staff</h3>
+        <a href="/admin/staff/add" class="btn" 
+        style="background-color: #26DF20; color: white; border-radius: 10px;">
+        + Add New Staff</a>
+    </div>
+
+    <!-- Search Bar -->
+    <form method="GET" action="/admin/staff">
+        <div class="input-group mb-4">
+            <input type="text" name="search" class="form-control" 
+            placeholder="Search staff by name..." 
+            style="border: 1.5px solid #A8D5A2; border-radius: 10px 0 0 10px;"
+            value="{{ search }}">
+            <button class="btn" type="submit" 
+            style="background-color: #58AF50; color: white; border-radius: 0 10px 10px 0;">
+            Search</button>
+        </div>
+    </form>
+
+    <!-- Staff Table -->
+    <div class="card" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background-color: #E8F5E6;">
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff in staff_list %}
+                    <tr>
+                        <td>{{ staff.custom_id }}</td>
+                        <td>{{ staff.username }}</td>
+                        <td>{{ staff.email }}</td>
+                        <td>
+                            {% if staff.is_active %}
+                                <span class="badge" style="background-color: #26DF20;">Active</span>
+                            {% else %}
+                                <span class="badge" style="background-color: red;">Blacklisted</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if staff.is_active %}
+                                <a href="/admin/staff/blacklist/{{ staff.id }}" class="btn btn-sm" 
+                                style="background-color: orange; color: white; border-radius: 8px;"
+                                onclick="return confirm('Blacklist this staff?')">Blacklist</a>
+                            {% else %}
+                                <a href="/admin/staff/activate/{{ staff.id }}" class="btn btn-sm" 
+                                style="background-color: #58AF50; color: white; border-radius: 8px;">Activate</a>
+                            {% endif %}
+                            <a href="/admin/staff/delete/{{ staff.id }}" class="btn btn-sm" 
+                            style="background-color: #ff4d4d; color: white; border-radius: 8px;"
+                            onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center" style="color: #888;">No staff found!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="/admin/dashboard" style="color: #58AF50;">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

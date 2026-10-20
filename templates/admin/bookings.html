@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 style="color: #58AF50; font-weight: 700;">📋 All Bookings</h3>
+    </div>
+
+    <!-- Bookings Table -->
+    <div class="card" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead style="background-color: #E8F5E6;">
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User ID</th>
+                        <th>Username</th>
+                        <th>Trek</th>
+                        <th>Location</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Booking Date</th>
+                        <th>Trek Status</th>
+                        <th>Booking Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.custom_id }}</td>
+                        <td>{{ booking.user.custom_id }}</td>
+                        <td>{{ booking.user.username }}</td>
+                        <td>{{ booking.trek.name }}</td>
+                        <td>{{ booking.trek.location }}</td>
+                        <td>{{ booking.trek.start_date }}</td>
+                        <td>{{ booking.trek.end_date }}</td>
+                        <td>{{ booking.booking_date }}</td>
+                        <td>
+                            <span class="badge" style="background-color: #58AF50;">
+                            {{ booking.trek.status }}</span>
+                        </td>
+                        <td>
+                            {% if booking.status == 'Booked' %}
+                                <span class="badge" style="background-color: #26DF20;">Booked</span>
+                            {% elif booking.status == 'Cancelled' %}
+                                <span class="badge" style="background-color: red;">Cancelled</span>
+                            {% else %}
+                                <span class="badge" style="background-color: #58AF50;">Completed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="10" class="text-center" style="color: #888;">No bookings found!</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a href="/admin/dashboard" style="color: #58AF50;">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

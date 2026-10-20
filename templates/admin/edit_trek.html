@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card p-4" style="border: 1.5px solid #A8D5A2; border-radius: 15px;">
+                <h4 style="color: #58AF50; font-weight: 700;">✏️ Edit Trek</h4>
+                <hr style="border-color: #A8D5A2;">
+                <form method="POST" action="/admin/treks/edit/{{ trek.id }}">
+                    <div class="mb-3">
+                        <label style="color: #555;">Trek Name</label>
+                        <input type="text" name="name" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;" 
+                        value="{{ trek.name }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Location</label>
+                        <input type="text" name="location" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;" 
+                        value="{{ trek.location }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Difficulty</label>
+                        <select name="difficulty" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;">
+                            <option value="Easy" {% if trek.difficulty == 'Easy' %}selected{% endif %}>Easy</option>
+                            <option value="Moderate" {% if trek.difficulty == 'Moderate' %}selected{% endif %}>Moderate</option>
+                            <option value="Hard" {% if trek.difficulty == 'Hard' %}selected{% endif %}>Hard</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Duration (in days)</label>
+                        <input type="number" name="duration" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;" 
+                        value="{{ trek.duration }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Available Slots</label>
+                        <input type="number" name="available_slots" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;" 
+                        value="{{ trek.available_slots }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Start Date</label>
+                        <input type="date" name="start_date" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;" 
+                        value="{{ trek.start_date }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">End Date</label>
+                        <input type="date" name="end_date" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;" 
+                        value="{{ trek.end_date }}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Status</label>
+                        <select name="status" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;">
+                            <option value="Pending" {% if trek.status == 'Pending' %}selected{% endif %}>Pending</option>
+                            <option value="Approved" {% if trek.status == 'Approved' %}selected{% endif %}>Approved</option>
+                            <option value="Open" {% if trek.status == 'Open' %}selected{% endif %}>Open</option>
+                            <option value="Closed" {% if trek.status == 'Closed' %}selected{% endif %}>Closed</option>
+                            <option value="Completed" {% if trek.status == 'Completed' %}selected{% endif %}>Completed</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label style="color: #555;">Assign Staff</label>
+                        <select name="staff_id" class="form-control" 
+                        style="border: 1.5px solid #A8D5A2; border-radius: 8px;">
+                            <option value="">No Staff Assigned</option>
+                            {% for staff in staff_list %}
+                            <option value="{{ staff.id }}" 
+                            {% if trek.staff_id == staff.id %}selected{% endif %}>
+                            {{ staff.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn w-100 mt-2" 
+                    style="background-color: #26DF20; color: white; border-radius: 10px;">
+                    Update Trek</button>
+                </form>
+                <div class="mt-3">
+                    <a href="/admin/treks" style="color: #58AF50;">← Back to Treks</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
